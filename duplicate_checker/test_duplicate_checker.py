@@ -23,12 +23,20 @@ class TestDuplicateChecker(unittest.TestCase):
     def test_columns_col_1(self):
         """Test duplicates based on ['col_1']."""
         result = count_and_sample_duplicates_by_columns(self.df, ["col_1"])
+        expected_samples = pd.DataFrame(
+            {"col_1": ["A", "B"], "number_of_duplicates": [4, 3]}
+        )
         self.assertEqual(result["count"], 7)
+        pd.testing.assert_frame_equal(result["samples"], expected_samples)
 
     def test_columns_col_1_col_2(self):
         """Test duplicates based on ['col_1', 'col_2']."""
         result = count_and_sample_duplicates_by_columns(self.df, ["col_1", "col_2"])
+        expected_samples = pd.DataFrame(
+            {"col_1": ["A"], "col_2": ["a"], "number_of_duplicates": [2]}
+        )
         self.assertEqual(result["count"], 2)
+        pd.testing.assert_frame_equal(result["samples"], expected_samples)
 
     def test_columns_col_1_col_2_col_3(self):
         """Test duplicates based on ['col_1', 'col_2', 'col_3']."""
@@ -36,6 +44,7 @@ class TestDuplicateChecker(unittest.TestCase):
             self.df, ["col_1", "col_2", "col_3"]
         )
         self.assertEqual(result["count"], 0)
+        self.assertTrue(result["samples"].empty)
 
     def test_empty_dataframe(self):
         """Test with an empty DataFrame."""
