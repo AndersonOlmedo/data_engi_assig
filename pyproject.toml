@@ -21,4 +21,4 @@ exclude = '''
 [tool.mypy]
 python_version = 3.8
 check_untyped_defs = true
-ignore_missing_imports = true
+ignore_missing_imports = true # To avoid -> error: Library stubs not installed for "pandas"  [import-untyped]
