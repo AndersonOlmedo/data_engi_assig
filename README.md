@@ -4,12 +4,18 @@ A utility to count and sample duplicate rows in a pandas DataFrame based on spec
 
 ## Installation
 
-To set up a virtual environment and install dependencies, run:
+To set up a virtual environment and install prod dependencies, run:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+To install dev dependencies, run:
+
+```bash
+pip install -r dev-requirements.txt
 ```
 
 ## Usage
