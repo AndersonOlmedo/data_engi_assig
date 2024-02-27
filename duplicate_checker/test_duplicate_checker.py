@@ -6,7 +6,7 @@ from .duplicate_checker import count_and_sample_duplicates_by_columns
 
 class TestDuplicateChecker(unittest.TestCase):
     def setUp(self):
-        """Set up test data for the unit tests."""
+        """Set up test data for the unit tests and Assignment."""
         self.df = pd.DataFrame(
             data=[
                 ["A", "a", "x", 1],
