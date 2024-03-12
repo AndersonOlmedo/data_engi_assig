@@ -1,12 +1,11 @@
 import unittest
-
 import pandas as pd
 from .duplicate_checker import count_and_sample_duplicates_by_columns
 
 
 class TestDuplicateChecker(unittest.TestCase):
     def setUp(self):
-        """Set up test data for the unit tests and Assignment."""
+        """Set up test data for the unit tests."""
         self.df = pd.DataFrame(
             data=[
                 ["A", "a", "x", 1],
@@ -55,11 +54,23 @@ class TestDuplicateChecker(unittest.TestCase):
 
     def test_invalid_column_name(self):
         """Test with an invalid column name."""
-        result = count_and_sample_duplicates_by_columns(self.df, ["invalid_column"])
-        self.assertEqual(result["count"], 0)
-        expected_columns = ["invalid_column", "number_of_duplicates"]
-        self.assertTrue(result["samples"].empty)
-        self.assertListEqual(list(result["samples"].columns), expected_columns)
+        with self.assertRaises(ValueError) as cm:
+            count_and_sample_duplicates_by_columns(self.df, ["invalid_column"])
+        self.assertEqual(
+            str(cm.exception), "Missing columns in DataFrame: {'invalid_column'}"
+        )
+
+    def test_invalid_columns_parameter_type(self):
+        """Test with an invalid 'columns' parameter type (not a list)."""
+        with self.assertRaises(ValueError) as cm:
+            count_and_sample_duplicates_by_columns(self.df, "col_1")
+        self.assertEqual(str(cm.exception), "'columns' must be a list of strings.")
+
+    def test_empty_columns_list(self):
+        """Test with an empty 'columns' list."""
+        with self.assertRaises(ValueError) as cm:
+            count_and_sample_duplicates_by_columns(self.df, [])
+        self.assertEqual(str(cm.exception), "'columns' list cannot be empty.")
 
 
 if __name__ == "__main__":
