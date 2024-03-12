@@ -23,9 +23,18 @@ def count_and_sample_duplicates_by_columns(
             "samples": pd.DataFrame(columns=columns + ["number_of_duplicates"]),
         }
 
-    duplicate_rows = df[df.duplicated(subset=columns, keep=False)]
+    # Filter DataFrame to relevant columns to reduce memory usage
+    df_filtered = df[columns].copy()
+
+    # Mark duplicates
+    is_duplicate = df_filtered.duplicated(subset=columns, keep=False)
+
+    # Group by and count duplicates directly without creating a separate DataFrame
     duplicate_counts = (
-        duplicate_rows.groupby(columns).size().reset_index(name="number_of_duplicates")
+        df_filtered[is_duplicate]
+        .groupby(columns)
+        .size()
+        .reset_index(name="number_of_duplicates")
     )
 
     result = {
